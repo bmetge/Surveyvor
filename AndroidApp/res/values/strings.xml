@@ -1,0 +1,26 @@
+<resources>
+
+    <string name="app_name">SurveyVor</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_login">SurveyVor</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="surveyvor">SurveyVor</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="title_activity_forgot_password">ForgotPassword</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_create_survey">CreateSurvey</string>
+    <string name="title_activity_preview_survey">PreviewSurvey</string>
+    <string name="title_activity_edit_survey">EditSurvey</string>
+    <string name="title_activity_edit_questions">EditQuestions</string>
+    <string name="title_activity_manage_account">ManageAccount</string>
+    <string name="title_activity_change_password">ChangePassword</string>
+    <string name="title_activity_delete_account">DeleteAccount</string>
+    <string name="title_activity_question">Question</string>
+    <string name="title_activity_create_question">CreateQuestion</string>
+    <string name="title_activity_send_survey">SendSurvey</string>
+
+</resources>

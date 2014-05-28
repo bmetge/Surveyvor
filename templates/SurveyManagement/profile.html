@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Profile Page</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Ask some questions, get some answers!">
+		<meta name="author" content="Surveyvor Team">
+
+		<!-- Le styles -->
+		<link href="/static/css/surveyvor.min.css" rel="stylesheet">
+
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<!-- navigation bar -->
+		<div class="navbar navbar-fixed-top force-min-width">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<a class="brand span2" href="#">SurveyVor</a>
+						<div class="dropdown span6 offset3 hasPointer">
+							<a class="dropdown-toggle navbar-text" data-toggle="dropdown" data-target="#"  id="USERname">
+								<i id="AccountManagementIcon" class=" icon-user filledRemoveButton hasTooltip" title="Edit Account"></i>
+								Welcome <span id='userLogin'>{{username}}</span>
+							</a>
+							<ul class="dropdown-menu" id="AccountManagementDropDownMenu" role="menu" aria-labelledby="USERname" >
+								<!-- dropdown menu links -->
+								<li role="menuitem"><a tabindex="-1" href="#AccountDeleteModal" role="button" data-toggle="modal">Delete Account</a></li>
+								<li role="menuitem"><a tabindex="-1" href="#PasswordChangeModal" role="button" data-toggle="modal">Change Password</a></li>
+							</ul>
+						</div>
+						<ul class="nav pull-right">
+							<li id="Logout" class="nav pull-right"><a href="/account/logout.html" >Logout</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>            
+		</div>
+		<!-- Main container -->
+		<div class="container-fluid force-min-width">
+			<div class="row-fluid">
+				<!-- Side bar -->
+				<div class="span2" id="profilePageLeftSideMenu">
+					<div class="control-group">
+						<div class="well sidebar-nav">
+							<ul class="nav nav-list">
+								<li class="nav-header">Manage</li>
+							</ul>
+							<a href="#createSurveyModal" role="button" data-toggle="modal" id="createSurveyButton" class="btn btn-primary">Create Survey</a>
+						</div>
+					</div>
+					<div class="alert alert-info">
+						<h5 class="alert-heading">Thank you for using SurveyVor!</h5>
+						To begin click on "Create Survey" to create an unpublished survey and click on the edit button to add some questions to it.
+					</div>
+					<div class="fb-like" data-href="https://www.okarrakchou.com/" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true"></div>    
+					<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.okarrakchou.com/" data-text="SurveyVor">Tweet</a>
+				</div>    
+				<!--Surveys list -->
+				<div class="span10">
+					<div>
+						<fieldset>
+							<legend>List of Published Surveys</legend>
+							<div class="container-fluid">
+								<div class="alert alert-info" id="waitMessagePublished">
+									<h5 class="alert-heading">Loading...</h5>
+									The published surveys list is loading
+								</div>
+								<table class="table table-striped table-bordered" id="publishedTable" style="display: none;">
+									<!-- Area filled by javascript -->
+									<thead>
+										<tr>
+											<th>Survey Name</th>
+											<th>Creation Date</th>
+											<th>Last Edit Date</th>
+											<th>Quiz</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody id="fillablePublishedTable" >
+									</tbody>
+								</table>
+							</div>
+						</fieldset>
+					</div>
+					<div>
+						<fieldset>
+							<legend>List of Unpublished Surveys</legend>
+							<div class="container-fluid">
+								<div class="alert alert-info" id="waitMessageUnpublished">
+									<h5 class="alert-heading">Loading...</h5>
+									The unpublished surveys list is loading
+								</div>
+								<table class="table table-striped table-bordered" id="unpublishedTable" style="display: none;">
+									<!-- Area filled by javascript -->
+									<thead>
+										<tr>
+											<th>Survey Name</th>
+											<th>Creation Date</th>
+											<th>Last Edit Date</th>
+											<th>Quiz</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody id="fillableUnpublishedTable">
+									</tbody>
+								</table>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Survey Preview modal -->
+		<div class="modal large hide fade" id="previewSurveyModal" tabindex="-1" role="dialog" aria-labelledby="previewSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 id="previewSurveyModalLabel">Survey Preview</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid" id="previewSurveyEditMessage" style="display:none;">
+						<div class="span12">
+							<h5>Your survey doesn't contain any question. Please add questions before previewing.</h5>
+						</div>
+					</div>
+					<div class="row-fluid" id="previewSurveyForm">
+						<div class="span12">
+							<!-- Side Bar -->
+							<div class="span3">
+								<div class="well side-menu">
+									<ul class="nav nav-list fixed" id ="listQuestionsPreview">
+										<!-- Area filled by javascript-->
+									</ul>
+								</div>
+							</div><!--End Side Bar--> 
+							<!-- Preview Question form -->
+							<div class="span9">
+								<div class="row-fluid">
+									<div class="form-horizontal well span12">
+										<div class="row-fluid">
+											<fieldset>
+												<legend id="titlePreviewModal"></legend>
+												<div class="control-group" id="previewQuestionTextGrp">
+												</div>
+												<div class="control-group"  id="previewTextQuestionGrp" style="display:none;">
+													<div class="span2">
+														<label for="previewQuestionText">Answer: </label>
+													</div>
+													<textarea class="span10" rows="2" id="previewQuestionText" placeholder="Enter your answer here"></textarea>
+												</div>
+												<div class="control-group" id="previewNumericQuestionGrp" style="display:none;">
+													<div class="span2">
+														<label for="previewNumericInput">Number: </label>
+													</div>
+													<div class="span10">
+														<input type="number" id="previewNumericInput" placeholder="Response here">
+													</div>
+												</div>
+												<div class="control-group" id="dateQuestionGrp" style="display:none;">
+													<div class="span2">
+														<label for="datepicker">Date: </label>
+													</div>
+													<div class="span10">
+														<input type="text" id="datepicker" placeholder="Response here">
+													</div>
+												</div>
+												<div class="control-group form-inline"  id="previewCheckBoxGrp">
+												</div>
+												<div class="control-group row-fluid">
+													<div class="span10 offset1" id="intervalScaleSliderGrp">
+													</div>
+												</div>
+												<div class="control-group"  id="scaleSliderGrp" style="display:none;">
+													<p>
+													Selected value: <span id="scaleSliderValue"></span>
+													</p>
+													<div id="scaleSlider">
+													</div>
+												</div>
+												<div class="control-group form-inline"  id="previewRadioBTNGrp">
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<!-- Edit Survey modal -->
+		<div class="modal large hide fade" id="editSurveyModal" tabindex="-1" role="dialog" aria-labelledby="editSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="editSurveyModalLabel">Edit Survey</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<div class="span12">
+							<!-- Side Bar -->
+							<div class="span3">
+								<div class="row-fluid">
+									<button class="btn btn-primary span12" id="addQuestion">Add Question</button>
+								</div>
+								<div class="row-fluid">
+									<div class="well side-menu" id="EditQuestionsLeftSideMenu" style="display:none; margin-top:10px;">
+										<ul class="nav nav-list fixed" id ="listQuestions">
+											<!-- Area filled by javascript -->
+										</ul>
+									</div>
+								</div>
+								<div class="alert alert-info" id="dragDropInfo">
+									Use drag-and-drop to reorder questions.
+								</div>
+							</div><!--End Side Bar-->
+							<div class="span9">
+								<div class="row-fluid">
+									<div class="form-horizontal well span12">
+										<fieldset>
+											<div class="row-fluid">
+												<div class="span5">
+													<label class="form-label" for="editSurveyNametxt">Edit Survey Name:</label>
+												</div>
+												<div class="span7">
+													<div class="row-fluid">
+														<div class="span12">
+															<input type="text" id="editSurveyNametxt" maxlength="255" class="span12" placeholder="Survey Name">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row-fluid">
+												<div class="span5">
+													<label class="form-label">Type:</label>
+												</div>
+												<div class="span3 offset1">
+													<input type="radio" id="editQuizRadioCreate" name="surveytypeEdit" value="quiz" checked>
+													<label for="quizRadioCreate" class="help-inline radio">Quiz</label>
+												</div>
+												<div class="span3">
+													<input type="radio" id="editSurveyRadioCreate" name="surveytypeEdit" value="survey">
+													<label for="surveyRadioCreate" class="help-inline radio">Survey</label>
+												</div> 
+											</div>
+										</fieldset>
+									</div>
+								</div>
+								<div class="alert alert-success" id="changesSavedMessage" style="display: none;">
+									<h5 class="alert-heading">Success!</h5>
+									The changes have been saved!
+								</div>
+								<!-- Question Edit form -->
+								<div class="row-fluid" id="editQuestionForm" style="display: none;">
+									<div class="form-horizontal well span12">
+										<div class="row-fluid">
+											<div class="form-horizontal">
+												<fieldset>
+													<label>Question Text:</label>
+													<textarea class="span12" rows="5" maxlength="1024" id="QuestionText" placeholder="Enter your question here"></textarea>
+													<label>Choose Question Type:</label>
+													<div class="row-fluid control-group">
+														<div class="span8">
+															<div class="dropdown">
+																<a class="btn dropdown-toggle" data-toggle="dropdown" data-target="#"  id="QuestionTypeBTN">
+																	-- Choose Question Type --
+																	<span class="caret"></span>
+																</a>
+																<ul class="dropdown-menu" id="QuestionTypeDropDownMenu" role="menu" aria-labelledby="QuestionTypeBTN" >
+																	<!-- dropdown menu links -->
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_1" >Text question</a></li>
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_2">Numeric input question</a></li>
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_3">Single selection question</a></li>
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_4">Multiple selection question</a></li>
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_5">Scale question</a></li>
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_6">Interval scale question</a></li>
+																	<li role="menuitem"><a tabindex="-1" href="#" role="button" class="typeQuestion" id="typeQuestion_7">Date question</a></li>
+																</ul>
+															</div>
+														</div>
+														<div class="span4" id="addAnswerButtonGrp" style="display: none;">
+															<button id="addAnswerButton" class="btn btn-primary">Add Answer</button>
+														</div>
+													</div>
+													<div class="control-group" id="editPossibleAnswer" style="display: none;">
+													</div>
+													<div class="control-group" id="editScaleQuestionParameters" style="display: none;">
+														<div class="row-fluid">
+															<div class="span3">
+																<label class="form-label" for="valMinInput">Minimum value: </label>
+															</div>
+															<div class="span9">
+																<div class="row-fluid">
+																	<div class="span8">
+																		<input type="number" id="valMinInput" class="span12">
+																	</div>
+																</div>
+															</div>
+														</div>	
+														<div class="row-fluid">
+															<div class="span3">
+																<label class="form-label" for="valMaxInput">Maximum value: </label>
+															</div>
+															<div class="span9">
+																<div class="row-fluid">
+																	<div class="span8">
+																		<input type="number" id="valMaxInput" class="span12">
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="row-fluid">
+															<div class="span3">
+																<label class="form-label" for="resolution">Resolution: </label>
+															</div>
+															<div class="span9">
+																<div class="row-fluid">
+																	<div class="span8">
+																		<input type="number" id="resolution" class="span12">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</fieldset>
+											</div>
+										</div>
+										<div class="form-actions">
+											<div class="pull-right">
+												<button id="editQuestionSaveButton" class="btn btn-primary ">Save</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true" id="closeEditModal">Close</button>
+			</div>
+		</div>
+		<!-- Change Password modal -->
+		<div class="modal hide fade" id="PasswordChangeModal" tabindex="-1" role="dialog" aria-labelledby="PasswordChangeModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="PasswordChangeModalLabel">Change Password</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="passwordChangeGrp">
+								<div class="span12">
+									<div class="form-horizontal well">
+										<fieldset>
+											<div class="control-group"  id="passwordChangeGrp2">
+												<div class="span3">
+													<label class="form-label" for="passwordChange">Password</label>
+												</div>
+												<div class="span7">
+													<div class="row-fluid">
+														<div class="span5">
+															<input type="password" id="passwordChange" placeholder="Password" class="span12">
+														</div>
+														<div class="span7">
+															<span class="help-inline" id="passwordChangeEmptyMsg" style="display: none;">Password couldn't be empty</span>
+														</div>
+														<div class="span7">
+															<span class="help-inline" id="passwordChangeInvalidMsg" style="display: none;">Password is incorrect</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="control-group"  id="passwordChangeNewGrp">
+												<div class="span3">
+													<label class="form-label" for="passwordChangeNew">New Password</label>
+												</div>
+												<div class="span7">
+													<div class="row-fluid">
+														<div class="span5">
+															<input type="password" id="passwordChangeNew" placeholder="Password" class="span12">
+														</div>
+														<div class="span7">
+															<span class="help-inline" id="passwordChangeNewEmptyMsg" style="display: none;">New Password couldn't be empty</span>
+															<span class="help-inline" id="passwordChangeNewConflictMsg" style="display: none;">New Password couldn't be same as old Password</span>
+															<span class="help-inline" id="invalidNewPassword" style="display: none;">Password must be at least 8 characters long and must contain 1 letter and 1 number</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="control-group"  id="passwordChangeAgainGrp">
+												<div class="span3">
+													<label class="form-label" for="passwordChangeAgain">Re-Type New Password</label>
+												</div>
+												<div class="span7">
+													<div class="row-fluid">
+														<div class="span5">
+															<input type="password" id="passwordChangeAgain" placeholder="Password" class="span12">
+														</div>
+														<div class="span7">
+															<span class="help-inline" id="passwordChangeDonotMatchMsg" style="display: none;">Password Doesn't match</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</fieldset> 
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="alert alert-success" id="passwordChangeSuccess" style="display: none;">
+					<h5 class="alert-heading">Password Changed!</h5>
+					Your password has been successfully changed!
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnConfirmChangePassword" >Confirm</button>
+				<button class="btn" id="btnCancelChangePassword" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			</div>
+		</div>
+		<!-- Survey Send modal -->
+		<div class="modal large hide fade" id="sendSurveyModal" tabindex="-1" role="dialog" aria-labelledby="sendSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="sendSurveyModalLabel">Send Survey</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<fieldset>
+						<div class="control-group alert alert-info">
+							You can send a survey invitation to a respondent by entering the respondent's mail and editing the mail content.
+							Note that it's efficient to send the survey invitation to a mailing list to reach more respondents.
+						</div>
+						<div class="control-group alert alert-info">
+							If you want to create your own mail, and send it through your webmail, the link to access the survey is :
+							<a id="surveyLink"></a>
+						</div>
+						<div class="alert alert-info" id="sendSurveyWaitMessage" style="display: none;">
+							<h5 class="alert-heading">Please wait...</h5>
+							Your sending request is being processed by the system. 
+						</div>
+						<div class="alert alert-info" id="sendSurveySuccessMessage" style="display: none;">
+							<h5 class="alert-heading">Congratulations</h5>
+							Your sending request is successfully processed. 
+						</div>
+						<div class="control-group" id="sendSurveyEmailGrp">
+							<div class="row-fluid">
+								<div class="span6">
+									<input type="text" id="sendSurveyEmail" maxlength="254" placeholder="Respondent Email Address">
+								</div>
+								<div class="span6">
+									<span class="help-inline" id="sendSurveyEmailEmptyMsg" style="display: none;">   Email couldn't be empty</span>
+									<span class="help-inline" id="sendSurveyEmailValidMsg" style="display: none;">   It is not a valid Email address</span>
+								</div>
+							</div>
+						</div>
+						<div class="control-group" id="sendSurveyEmailContentGrp">
+							<div class="row-fluid">
+								<div class="span10">
+									<textarea class="span12" rows="8" id="sendSurveyEmailContent"></textarea>
+								</div>
+								<div class="span2">
+									<span class="help-inline" id="sendSurveyEmailContentEmptyMsg" style="display: none;">Content couldn't be empty</span>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnsendSurvey">Submit</button>
+				<button class="btn" data-dismiss="modal" id="btnCloseSendSurvey" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<!-- Account Delete Confirm modal -->
+		<div class="modal hide fade" id="AccountDeleteModal" tabindex="-1" role="dialog" aria-labelledby="AccountDeleteModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="AccountDeleteModalLabel">Account Delete</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="accountDeleteGrp">
+								<div class="span12">
+									<h5>Are you sure you want to Delete your account?</h5>
+								</div>
+								<div class="span5">
+									<input type="password" id="passwordDeleteAccount" placeholder="Password">
+								</div>
+								<div class="span7">
+									<span class="help-inline" id="passwordDeleteEmptyMsg" style="display: none;">Password couldn't be empty</span>
+									<span class="help-inline" id="passwordDeleteDontMatchMsg" style="display: none;">Password doesn't match</span>
+								</div>
+							</div>
+						</fieldset>
+						<div class="alert alert-info" id="registrationWaitMessage" style="display: none;">
+							<h5 class="alert-heading">Please wait...</h5>
+							Your registration request is being processed by the system. 
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnConfirmAccountDelete">Confirm</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			</div>
+		</div>
+		<!-- Close Survey Confirm modal -->
+		<div class="modal hide fade" id="CloseSurveyModal" tabindex="-1" role="dialog" aria-labelledby="closeSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="closeSurveyModalLabel">Close Survey</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="CloseSurveyGrp">
+								<div class="span12">
+									<h5>After you close this survey you cannot get anymore response but you still can open the survey again whenever you want to use it.</h5>
+									<h5>Are you sure you want to close this survey?</h5>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnConfirmClose" data-dismiss="modal">Confirm</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			</div>
+		</div>
+		<!-- Publish Survey edit request modal -->
+		<div class="modal hide fade" id="PublishSurveyEditModal" tabindex="-1" role="dialog" aria-labelledby="publishSurveyEditModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="publishSurveyEditModalLabel">Warning</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="surveyNamePublishEditGrp">
+								<div class="span12">
+									<h5>This Survey is already published. You cannot edit it anymore.</h5>
+									<h5>Click 'Yes' if you want to create an unpublished copy of this survey.</h5>
+								</div>
+							</div>
+						</fieldset>
+						<div class="alert alert-info" id="publishedcopysuccessMessage" style="display: none;">
+							<h5 class="alert-heading">Congratulations</h5>
+							New copy successfully created. 
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnPublishEdit" >Yes</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true" id="createCopyCancelButton">Cancel</button>
+			</div>
+		</div>
+		<!-- Publish Survey Confirm modal -->
+		<div class="modal hide fade" id="PublishSurveyModal" tabindex="-1" role="dialog" aria-labelledby="publishSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="publishSurveyModalLabel">Publish Survey</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="surveyNamePublishGrp">
+								<div class="span12">
+									<h5>Are you sure you want to publish this survey?</h5>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="alert alert-success" id="surveyPublishSuccess" style="display: none;">
+					<h5 class="alert-heading">Congratulations!</h5>
+					Your survey has been successfully published!
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnConfirmPublish" >Confirm</button>
+				<button class="btn" id="btnClosePublishModal" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			</div>
+		</div>
+		<!-- Delete Survey Confirm modal -->
+		<div class="modal hide fade" id="deleteSurveyModal" tabindex="-1" role="dialog" aria-labelledby="deleteSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="deleteSurveyModalLabel">Delete Survey</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="surveyNameDeleteGrp">
+								<div class="span12">
+									<h5>Are you sure you want to delete this survey?</h5>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="alert alert-success" id="surveyDeleteSuccess" style="display: none;">
+					<h5 class="alert-heading">Congratulations!</h5>
+					Your survey has been successfully deleted!
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal" aria-hidden="true">Yes</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+			</div>
+		</div>
+		<!-- Create Survey modal -->
+		<div class="modal hide fade" id="createSurveyModal" tabindex="-1" role="dialog" aria-labelledby="createSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="createSurveyModalLabel">Create Survey</h3>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info">
+					There are two types of surveys:  quizs and anonymous surveys. The difference between them is that to respond to quizs,
+					respondents need to enter their name. You can see then their answers by clicking on the "List Respondents" button.
+				</div>
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<fieldset>
+							<div class="control-group" id="surveyNameCreateGrp">
+								<div class="span3">
+									<label class="form-label" for="surveyNameCreate">Survey Name</label>
+								</div>
+								<div class="span9">
+									<div class="row-fluid">
+										<div class="span5">
+											<input type="text" maxlength="255" placeholder="Survey Name" id="surveyNameCreate" class="span12"/>
+										</div>
+										<div class="span7">
+											<span class="help-inline" id="surveyNameEmptyMsgCreate" style="display: none;">Survey name required</span>
+											<span class="help-inline" id="surveyNameAlreadyTakenCreate" style="display: none;">Survey name already taken !</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="control-group" id="quizRadioCreateGrp">
+								<div class="span3">
+									<div class="form-label">
+										<input type="radio" id="quizRadioCreate" name="surveytypeCreate" value="quiz" checked>
+									</div>
+								</div>
+								<div class="span9">
+									<div class="row-fluid">
+										<label for="quizRadioCreate" class="help-inline radio">Quiz</label>
+									</div>
+								</div>
+							</div>
+							<div class="control-group" id="surveyRadioCreateGrp">
+								<div class="span3">
+									<div class="form-label">
+										<input type="radio" id="surveyRadioCreate" name="surveytypeCreate" value="survey">
+									</div>
+								</div>
+								<div class="span9">
+									<div class="row-fluid">
+										<label for="surveyRadioCreate" class="help-inline radio">Anonymous Survey</label>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="alert alert-success" id="surveyCreationSuccess" style="display: none;">
+					<h5 class="alert-heading">Congratulations!</h5>
+					Your survey has been successfully created!
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="btnCreate" >Create</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<!-- List Respondent modal -->
+		<div class="modal large hide fade" id="listRespondentModal" tabindex="-1" role="dialog" aria-labelledby="listRespondentSurveyModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="listRespondentSurveyModalLabel">List of Respondents</h3>
+			</div>
+			<div class="modal-body">
+				<fieldset>
+					<legend>Respondents of <span id="surveyNameViewRespondents"></span> </legend>
+					<div class="container-fluid">
+						<div class="alert alert-info" id="waitMessageListRespondent">
+							<h5 class="alert-heading">Loading...</h5>
+							The respondents list is loading
+						</div>
+						<table class="table table-striped table-bordered" id="listRespondentTable" style="display: none;">
+							<!-- Area filled by javascript -->
+							<thead>
+								<tr>
+									<th>Respondent Name</th>
+									<th>IP Address</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody id="fillableListRespondentTable" >
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<!-- View Respondent modal -->
+		<div class="modal large hide fade" id="viewRespondentAnsModal" tabindex="-1" role="dialog" aria-labelledby="viewRespondentAnsModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="viewRespondentAnsModalLabel">Respondent Answers</h3>
+			</div>
+			<div class="modal-body">
+				<fieldset>
+					<legend>Answers of <span id="respondantNameViewAnswers"></span> </legend>
+					<div class="container-fluid">
+						<div class="alert alert-info" id="waitMessageViewRespondentAns">
+							<h5 class="alert-heading">Loading...</h5>
+							The respondent question and answer list is loading
+						</div>
+						<table class="table table-striped table-bordered" id="viewRespondentAnsTable" style="display: none;">
+							<!-- Area filled by javascript -->
+							<thead>
+								<tr>
+									<th>Question</th>
+									<th>Content</th>
+									<th>Answer</th>
+									<th>Time spent on this question (sec)</th>
+								</tr>
+							</thead>
+							<tbody id="fillableViewRespondentAnsTable" >
+							</tbody>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true" id="viewRespondentsModalClose">Close</button>
+			</div>
+		</div>
+		<!-- Analysis modal -->
+		<div class="modal large hide fade hasBigBody" id="analyzeModal" tabindex="-1" role="dialog" aria-labelledby="analyzeModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="analyzeModalLabel">Analyze Survey Results</h3>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="control-group" id="surveyInfoAnalyze">
+						<div class="row-fluid">
+							<div class="span3">
+								<h5>Survey Name :</h5>
+							</div>
+							<div class="span2">
+								<h6 id="analyzeSurveyName"></h6>
+							</div>
+							<div class="span3 offset2">
+								<h5>Survey Type :</h5>
+							</div>
+							<div class="span2">
+								<h6 id="analyzeSurveyType"></h6>
+							</div>
+						</div>
+					</div>
+					<div id="analyzeHelpChooseGrp">
+						<div class="alert alert-info">
+							There are two different Survey Analysis: 
+							per question and the geographical analysis.
+							You can reffer to below, which shows the detail of each analyse type.
+						</div>
+						<div class="accordion" id="helpAccordeonAnalyze">
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#helpAccordeonAnalyze" href="#perQuestionAccordeon">
+										Per Question
+									</a>
+								</div>
+								<div id="perQuestionAccordeon" class="accordion-body collapse in">
+									<div class="accordion-inner">
+										The per question survey displays an analysis of the responses per question. The following data visualization will be available:
+										<ul>
+											<li>Bar chart: It is used to visualize the number of times each answer has been selected in the single and 
+											multiple selection question, and in the interval scale question.</li>
+											<li>Statistics: It is used when the question is a numerical or scale question. It calculates
+											statistical parameters of the response set (average, standard deviation, variance, median) and allows the 
+											user to create intervals and to display in a bar chart the number of answers in each interval.</li>
+											<li>Text List: It is used when the question is a text question. It displays a list of the different answers
+											entered with the number of time it has been entered. This list can be sorted. The survey 
+											creator can select the size of the list (number of answers displayed).</li>
+											<li>Date List: It is used when the question is a date question. It displays a list of the different dates
+											entered with the number of time it has been entered. This list can be sorted. The survey 
+											creator can select the size of the list (number of dates displayed).
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#helpAccordeonAnalyze" href="#geographicalAccordeon">
+										Geographical
+									</a>
+								</div>
+								<div id="geographicalAccordeon" class="accordion-body collapse">
+									<div class="accordion-inner">
+										The geographical analysis will display a list of the countries from which respondents have done a survey based 
+										on their IP address and the number of respondents for each country. It can be sorted either from the most frequent 
+										to the less frequent country(by default) or from the less frequent to the most frequent country. The survey creator 
+										can select the size of the list (number of countries displayed).
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="row-fluid">
+								<div class="span4">
+									<label class="form-label">Choose an analyse type:</label>
+								</div>
+								<div class="span3 offset1">
+									<input type="radio" id="perQuestionRadioAnalyze" name="analysisType" value="question" checked>
+									<label for="perQuestionRadioAnalyze" class="help-inline radio">Per Question</label>
+								</div>
+								<div class="span4">
+									<input type="radio" id="geoRadioAnalyze" name="analysisType" value="geo">
+									<label for="geoRadioAnalyze" class="help-inline radio">Geographical Analysis</label>
+								</div> 
+							</div>
+						</div>
+						<div class="row-fluid">
+							<div class="control-group">
+								<div class="row-fluid">
+									<button class="btn btn-primary span2 offset5" id="analyzeButton">Analyze</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="perQuestionAnalyzeGrp" style="display:none">
+						<div class="container-fluid">
+							<div class="row-fluid">
+								<div class="span12">
+									<!-- Side Bar -->
+									<div class="span3">
+										<div class="row-fluid">
+											<div class="well side-menu">
+												<ul class="nav nav-list fixed" id ="listQuestionsAnalyze">
+													<!-- Area filled by javascript -->
+												</ul>
+											</div>
+										</div>
+									</div><!--End Side Bar-->
+									<div class="span9">
+										<div class="alert alert-info" id="waitMessageAnalyze">
+											<h5 class="alert-heading">Loading...</h5>
+											The question analysis is loading
+										</div>
+										<div class="form-horizontal">
+											<fieldset>
+												<p id="questionTextAnalyze">
+												</p>
+											</fieldset>
+										</div>
+										<!-- Analyze questions form -->
+										<div class="row-fluid" id="analyzeQuestionForms">
+											<ul class="nav nav-tabs" id="analyzeTabs">
+												<li class="active"><a href="#questionAnsTab" data-toggle="tab" id="questionAnsTabA">Question answers</a>
+												</li>
+												<li><a href="#questionStatsTab" data-toggle="tab">Time to respond stats</a></li>
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane active" id="questionAnsTab">
+													<div class="row-fluid" id="statisticsResults">
+														<div class="span12 form-hotizontal">
+															<fieldset>
+																<legend>Answers Statistics</legend>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Average value:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="avgValAnalyze"></span>
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Minimal value:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="minValAnalyze"></span>
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Maximal value:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="maxValAnalyze"></span>
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Standard Deviation:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="stdDevAnalyze"></span>
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Variance:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="varianceAnalyze"></span>
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+													</div>
+													<div class="row-fluid">
+														<div id="statisticsConfigureForm" class="span12">
+															<div class="alert alert-info">
+																You can display graphically the distribution of the different answers to this question. For this create
+																the intevals you want to represent by clicking on the create interval button. Intervals are defined as a set
+																of numbers that forms a partition of the integers set.
+															</div>
+															<div class="form-horizontal well">
+																<fieldset>
+																	<div class="control-group">
+																		<button id="addIntervalButton" class="btn btn-primary">Add Interval</button>
+																	</div>
+																	<div class="control-group" id="analyzeIntervals">
+																	</div>
+																	<button id="analyzeNumericalButton" class="btn btn-primary">Analyze</button>
+																</fieldset>
+															</div>
+														</div>
+													</div>
+													<div class="row-fluid" id="textListHelpForm" >
+														<div class="span12">
+															<div class="alert alert-info">
+																This question is a text question. The analysis gives you the list of all the
+																entered responses and the number of times each response have been entered.
+															</div>
+															<table class="table table-striped table-bordered" id="textListTable">
+																<!-- Area filled by javascript -->
+																<thead>
+																	<tr>
+																		<th>Entered Response</th>
+																		<th>Number of times entered</th>
+																	</tr>
+																</thead>
+																<tbody id="fillableTextListTable" >
+																</tbody>
+															</table>
+														</div>
+													</div>
+													<div class="row-fluid" id="dateListHelpForm" >
+														<div class="span12">
+															<div class="alert alert-info">
+																This question is a date question. The analysis gives you the list of all the
+																selected dates and the number of times each date have been selected.
+															</div>
+															<table class="table table-striped table-bordered" id="dateListTable">
+																<!-- Area filled by javascript -->
+																<thead>
+																	<tr>
+																		<th>Selected Date</th>
+																		<th>Number of times selected</th>
+																	</tr>
+																</thead>
+																<tbody id="fillableDateListTable" >
+																</tbody>
+															</table>
+														</div>
+													</div>
+													<div class="row-fluid" id="barChartHelpForm" >
+														<div class="span12">
+															<div class="alert alert-info">
+																The following bar chart displays the available answers and the number
+																of times they have been selected.
+															</div>
+														</div>
+													</div>
+													<div class="row-fluid" id="barChartGrp" >
+														<div class="span12">
+															<ul class="nav nav-tabs" id="chartTabs">
+																<li class="active"><a href="#barChartTab" data-toggle="tab" id="barChartTabA">Bar Chart</a>
+																</li>
+																<li><a href="#pieChartTab" data-toggle="tab" id="pieChartTabA">Pie Chart</a></li>
+															</ul>
+															<div class="tab-content">
+																<div class="tab-pane active" id="barChartTab">
+																	<div id="barChart">
+																	</div>
+																</div>
+																<div class="tab-pane" id="pieChartTab">
+																	<div id="pieChart">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="tab-pane" id="questionStatsTab">
+													<div class="row-fluid" id="statisticsDuration">
+														<div class="span12 form-horizontal">
+															<fieldset>
+																<legend>Time Taken to Respond Statistics</legend>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Average value:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="avgValDurationAnalyze"></span> seconds
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Minimal value:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="minValDurationAnalyze"></span> seconds
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Maximal value:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="maxValDurationAnalyze"></span> seconds
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Standard Deviation:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="stdDevDurationAnalyze"></span> seconds
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span5">
+																		<label class="form-label">Variance:</label>
+																	</div>
+																	<div class="span7">
+																		<span id="varianceDurationAnalyze"></span>
+																	</div>
+																</div>
+																<div class="control-group">
+																	<div class="span12">
+																		<label><span id="countDurationAnalyze"></span> respondents have responded to this question</label>
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+													</div>
+													<div class="row-fluid">
+														<div id="statisticsDurationConfigureForm" class="span12">
+															<div class="alert alert-info">
+																You can display graphically the distribution of the time taken to respond to this question. For this create
+																the intevals you want to represent by clicking on the create interval button. Intervals are defined as a set
+																of numbers that forms a partition of the integers set.
+															</div>
+															<div class="form-horizontal well">
+																<fieldset>
+																	<div class="control-group">
+																		<button id="addIntervalDurationButton" class="btn btn-primary">Add Interval</button>
+																	</div>
+																	<div class="control-group" id="analyzeDurationIntervals">
+																	</div>
+																	<button id="analyzeDurationButton" class="btn btn-primary">Analyze</button>
+																</fieldset>
+															</div>
+														</div>
+													</div>
+													<div class="row-fluid" id="barChartDurationGrp" >
+														<div class="span12">
+															<ul class="nav nav-tabs" id="chartDurationTabs">
+																<li class="active"><a href="#barChartDurationTab" data-toggle="tab" id="barChartDurationTabA">Bar Chart</a>
+																</li>
+																<li><a href="#pieChartDurationTab" data-toggle="tab" id="pieChartDurationTabA">Pie Chart</a></li>
+															</ul>
+															<div class="tab-content">
+																<div class="tab-pane active" id="barChartDurationTab">
+																	<div id="barChartDuration">
+																	</div>
+																</div>
+																<div class="tab-pane" id="pieChartDurationTab">
+																	<div id="pieChartDuration">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="geoAnalyzeGrp" style="display:none">
+						<div class="row-fluid">
+							<div class="span12">
+								<div class="alert alert-info">
+									The following table displays a list of the countries from which respondents
+									respondent to this survey and the number of respondent from each country.
+								</div>
+								<table class="table table-striped table-bordered" id="countryListTable">
+									<!-- Area filled by javascript -->
+									<thead>
+										<tr>
+											<th>Country</th>
+											<th>Number of respondents</th>
+										</tr>
+									</thead>
+									<tbody id="fillableCountryListTable" >
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="changeAnalysisTypeBtn" style="display:none;">Change Analysis Type</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<div id="fb-root"></div>
+		<!-- Javascript Includes -->
+		<script async src="/static/js/SurveyManagement/profile.min.js" type="text/javascript"></script>
+	</body>
+</html>

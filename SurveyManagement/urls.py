@@ -1,0 +1,25 @@
+from django.conf.urls import patterns, include, url
+
+
+urlpatterns = patterns('',
+    url(r'^count_published_surveys/$','SurveyManagement.views.countPublishedSurveys'),
+    url(r'^count_unpublished_surveys/$','SurveyManagement.views.countUnpublishedSurveys'),
+    url(r'^get_published_surveys/$','SurveyManagement.views.getPublishedSurveys'),
+    url(r'^get_unpublished_surveys/$','SurveyManagement.views.getUnpublishedSurveys'),
+    url(r'^create_survey/$', 'SurveyManagement.views.createSurvey'),
+    url(r'^get_survey/$', 'SurveyManagement.views.getSurvey'),
+    url(r'^get_survey_link/$', 'SurveyManagement.views.getSurveyLink'),
+    url(r'^check_survey/$', 'SurveyManagement.views.checkSurvey'),
+    url(r'^copy_survey/$', 'SurveyManagement.views.copySurvey'),
+    url(r'^edit_survey/$','SurveyManagement.views.editSurvey'),
+    url(r'^get_question/$','SurveyManagement.views.getQuestion'),
+    url(r'^count_question/$','SurveyManagement.views.countQuestion'),
+    url(r'^count_answer/$','SurveyManagement.views.countAnswer'),
+    url(r'^delete_survey/$','SurveyManagement.views.deleteSurvey'),
+    url(r'^close_survey/$','SurveyManagement.views.closeSurvey'),
+    url(r'^open_survey/$','SurveyManagement.views.openSurvey'),
+    url(r'^delete_question/$','SurveyManagement.views.deleteQuestion'),
+    url(r'^change_question_order/$','SurveyManagement.views.changeQuestionOrder'),
+    url(r'^publish_survey/$','SurveyManagement.views.publishSurvey'),
+    url(r'^send_survey/$','SurveyManagement.views.sendSurvey'),
+)

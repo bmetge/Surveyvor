@@ -1,0 +1,2 @@
+The apps and urls that must be installed are located on the file apps_urls.conf. Just copy the ones you want to install on
+the install.sh script and then run it. The script will reset itself after running.

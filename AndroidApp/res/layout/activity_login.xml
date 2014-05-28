@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:text="@string/surveyvor"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:ems="10"
+        android:inputType="textNoSuggestions|textVisiblePassword" 
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/password" 
+        android:hint="@string/username"> 
+        <requestFocus />
+     </EditText>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:hint="@string/password"
+        android:inputType="textPassword" >
+    </EditText>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignRight="@+id/username"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="32dp"
+        android:onClick="onClickLogin"
+        android:text="@string/login" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignRight="@+id/username"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="46dp"
+        android:onClick="onClickRegister"
+        android:text="@string/register" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="17dp"
+        android:onClick="onClickForgotPassword"
+		android:clickable="true"
+        android:text="Forgot Password?" />
+
+</RelativeLayout>

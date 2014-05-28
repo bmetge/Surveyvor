@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="91dp"
+        android:ems="10"
+        android:inputType="textNoSuggestions|textVisiblePassword" 
+        android:singleLine="true"
+        android:hint="Username" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/editText1"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_below="@+id/editText2"
+        android:ems="10"
+        android:hint="Retype Password"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText3"
+        android:layout_below="@+id/editText3"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress|textNoSuggestions|textVisiblePassword"
+        android:singleLine="true" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editText4"
+        android:layout_marginTop="62dp"
+        android:text="I accept the Terms and Conditions of the SurveyVor system" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBox1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:onClick="onClickRegister"
+        android:text="Register" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Registration"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

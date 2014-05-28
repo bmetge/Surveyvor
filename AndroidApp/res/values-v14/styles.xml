@@ -1,0 +1,5 @@
+<resources>
+    <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+         <item name="android:textColorPrimaryInverse">@android:color/primary_text_light</item>
+    </style>
+</resources>

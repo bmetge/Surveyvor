@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Surveyvor</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Ask some questions, get some answers!">
+		<meta name="author" content="Surveyvor Team">
+
+		<!-- Le styles -->
+		<link href="/static/css/surveyvor.min.css" rel="stylesheet">
+
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<!-- navigation bar -->
+		<div class="navbar navbar-fixed-top force-min-width">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<a class="brand span2" href="#">SurveyVor</a>
+						<ul class="nav span4">
+							<li class="active" id="HomeIcon"><a href="#">Home</a></li>
+							<li id="AboutIcon"><a href="/account/about_page.html">About</a></li>
+							<li id="ContactIcon"><a href="/account/contact_page.html">Contact</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>            
+		</div>
+		<!-- Main container -->
+		<div class="container-fluid force-min-width">
+			<div class="row-fluid">
+				<div class="row-fluid">
+					<div class="alert alert-error" id="loginFailure" style="display: none;">
+						<h5 class="alert-heading">Login failure!</h5>
+						The username or the password are incorrect, please try again. 
+					</div>
+					<div class="alert alert-info" id="validateMessage" style="display: none;">
+						<h5 class="alert-heading">Information!</h5>
+						You must validate your account by clicking on the link send to your mail box before being able to login.
+					</div>
+					<div class="alert alert-sucess" id="registrationSuccess" style="display: none;">
+						<h5 class="alert-heading">Registration success!</h5>
+						An email have been sent to you to verify your email address. 
+					</div>
+					<div class="alert alert-info" id="registrationWaitMessage" style="display: none;">
+						<h5 class="alert-heading">Please wait...</h5>
+						Your registration request is being processed by the system. 
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="well span2 side-menu">
+						<ul class="nav nav-list">
+							<li class="nav-header">SurveyVor</li>
+							<li class="active"><a href="#tab_login" data-toggle="tab"><i class="icon-chevron-right"></i> Login</a></li>
+							<li ><a href="#tab_register" data-toggle="tab"><i class="icon-chevron-right"></i> Registration</a></li>
+						</ul>
+					</div>
+					<div class="tab-content span10">  
+						<div class="tab-pane active" id="tab_login">
+							<!-- Login form -->
+							<div class="form-horizontal well">
+								<fieldset>
+									<legend>Login</legend>
+									<div class="control-group"  id="usernameLoginGrp">
+										<div class="span3">
+											<label class="form-label" for="usernameLogin">Username</label>
+										</div>
+										<div class="span7">
+											<div class="row-fluid">
+												<div class="span5">
+													<input type="text" id="usernameLogin" maxlength="255" placeholder="Username" class="span12">
+												</div>
+												<div class="span7">
+													<span class="help-inline" id="usernameLoginEmptyMsg" style="display: none;">Username couldn't be empty</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="control-group"  id="passwordLoginGrp">
+										<div class="span3">
+											<label class="form-label" for="passwordLogin">Password</label>
+										</div>
+										<div class="span7">
+											<div class="row-fluid">
+												<div class="span5">
+													<input type="password" id="passwordLogin" placeholder="Password" class="span12">
+												</div>
+												<div class="span7">
+													<span class="help-inline" id="passwordLoginEmptyMsg" style="display: none;">Password couldn't be empty</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-actions">
+										<button id="loginButton" class="btn btn-primary ">Login</button>
+										<a href="#forgotPasswordModal" role="button" data-toggle="modal" class="btn">Forgot Password</a>
+									</div>
+								</fieldset> 
+							</div>
+						</div>
+						<div class="tab-pane" id="tab_register">
+							<!-- Registration Form-->
+							<div class="form-horizontal well">
+								<fieldset>
+									<legend>Registration</legend>
+									<div class="control-group" id="usernameRegisterGrp">
+										<div class="span3">
+											<label class="form-label" for="usernameRegister">Username</label>
+										</div>
+										<div class="span9">
+											<div class="row-fluid">
+												<div class="span5">
+													<input type="text" id="usernameRegister" maxlength="255" placeholder="Username" class="span12">
+												</div>
+												<div class="span7">
+													<span class="help-inline" id="usernameTaken" style="display: none;">Username already taken</span>
+													<span class="help-inline" id="usernameRegisterEmptyMsg" style="display: none;">Username required</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="control-group" id="passwordRegisterGrp">
+										<div class="span3">
+											<label class="form-label" for="passwordRegister">Password</label>
+										</div>
+										<div class="span9">
+											<div class="row-fluid">
+												<div class="span5">
+													<input type="password" id="passwordRegister" placeholder="Password" class="span12">
+												</div>
+												<div class="span7">
+													<span class="help-inline" id="invalidPassword" style="display: none;">Password must be at least 8 characters long and must contain 1 letter and 1 number</span>
+													<span class="help-inline" id="passwordRegisterEmptyMsg" style="display: none;">Password required</span>
+												</div>
+											</div>	
+										</div>
+									</div>
+									<div class="control-group" id="password2RegisterGrp">
+										<div class="span3">
+											<label class="form-label" for="password2Register">Re-Type Password</label>
+										</div>
+										<div class="span9">
+											<div class="row-fluid">
+												<div class="span5">
+													<input type="password" id="password2Register" placeholder="Retype Password" class="span12">
+												</div>
+												<div class="span7">
+													<span class="help-inline" id="passwordNotMatch" style="display: none;">Passwords don't match</span>
+													<span class="help-inline" id="password2RegisterEmptyMsg" style="display: none;">Retyping the password is required</span>
+												</div>
+											</div>
+										</div>	
+									</div>
+									<div class="control-group" id="emailRegisterGrp">
+										<div class="span3">
+											<label class="form-label" for="emailRegister">Email Address</label>
+										</div>
+										<div class="span9">
+											<div class="row-fluid">
+												<div class="span5">
+													<input type="text" id="emailRegister" maxlength="254" placeholder="Email" class="span12">
+												</div>
+												<div class="span7">
+													<span class="help-inline" id="invalidEmail" style="display: none;">Invalid email</span>
+													<span class="help-inline" id="emailEmptyMsg" style="display: none;">Email required</span>
+													<span class="help-inline" id="emailAlreadyTaken" style="display: none;">Email already taken ! </span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="control-group" id="termsCheckboxGrp">
+										<div class="span3">
+											<div class="form-label">
+												<input type="checkbox" id="termsCheckbox" >
+											</div>
+										</div>
+										<div class="span9">
+											<div class="row-fluid">
+												<label for="termsCheckbox" class="help-inline checkbox">I Accept the <a href="#termsModal" role="button" data-toggle="modal">Terms and Conditions</a> of the SurveyVor system.</label>
+											</div>
+										</div>
+									</div>
+									<div class="form-actions">
+										<button id="registerButton" class="btn btn-primary ">Registration</button>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+		<!-- Terms and conditions modal -->
+		<div class="modal hide fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="termsModalLabel">Terms and conditions</h3>
+			</div>
+			<div class="modal-body">
+				<p>Terms and Conditions </p>
+				<p>
+				In using this website you are deemed to have read and agreed to the following terms and conditions: 
+				The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and any or all Agreements: 
+				"Client", “You” and “Your” refers to you, the person accessing this website and accepting the Company‟s terms and conditions. "The 
+				Company", “Ourselves”, “We” and "Us", refers to our Team. “Party”, “Parties”, or “Us”, refers to both the Client and ourselves, or 
+				either the Client or ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the 
+				process of our assistance to the Client in the most appropriate manner, whether by formal meetings of a fixed duration, or any other 
+				means, for the express purpose of meeting the Client's needs in respect of provision of the Team's stated services/products, in 
+				accordance with and subject to, prevailing Singapore Law. Any use of the above terminology or other words in the singular, plural, 
+				capitalisation and/or he/she or they, are taken as interchangeable and therefore as referring to same. 
+				</p>
+				<p>Privacy Statement</p>
+				<p>
+				We are committed to protecting your privacy. Authorized employees within the company on a need to know basis only use any information
+				collected from individual customers. We constantly review our systems and data to ensure the best possible service to our customers. 
+				Parliament has created specific offences for unauthorised actions against computer systems and data. We will investigate any such 
+				actions with a view to prosecuting and/or taking civil proceedings to recover damages against those responsible
+				</p>
+				<p>Confidentiality</p>
+				<p>
+				We are registered under the Data Protection Act 1998 and as such, any information concerning the Client and their respective Client
+				Records may be passed to third parties. However, Client records are regarded as confidential and therefore will not be divulged to 
+				any third party, other than [our manufacturer/supplier(s) and] if legally required to do so to the appropriate authorities. Clients 
+				have the right to request sight of, and copies of any and all Client Records we keep, on the proviso that we are given reasonable 
+				notice of such a request. Clients are requested to retain copies of any li
+				terature issued in relation to the provision of our services. Where appropriate, we shall issue Client‟s with appropriate written 
+				information, handouts or copies of records as part of an agreed contract, for the benefit of both parties. 
+				We will not sell, share, or rent your personal information to any third party or use your e-mail address for unsolicited mail. Any 
+				emails sent by this Company will only be in connection with the provision of agreed services and products. 
+				</p>
+				<p>Disclaimer Exclusions and Limitations</p>
+				<p>
+				The information on this web site is provided on an "as is" basis. To the fullest extent permitted by law, this Company: 
+				excludes all representations and warranties relating to this website and its contents or which is or may be provided by any affiliates
+				or any other third party, including in relation to any inaccuracies or omissions in this website and/or the Company‟s literature; and 
+				excludes all liability for damages arising out of or in connection with your use of this website. This includes, without limitation, 
+				direct loss, loss of business or profits (whether or not the loss of such profits was foreseeable, arose in the normal course of things 
+				or you have advised this Company of the possibility of such potential loss), damage caused to your computer, computer software, systems 
+				and programs and the data thereon or any other direct or indirect, consequential and incidental damages.  This Company does not however 
+				exclude liability for death or personal injury caused by its negligence. The above exclusions and limitations apply only to the extent 
+				permitted by law. None of your statutory rights as a consumer are affected.
+				</p>
+				<p>Log Files</p>
+				<p> 
+				We use IP addresses to analyse trends, administer the site, track user‟s movement, and gather broad demographic 
+				information for aggregate use. IP addresses are not linked to personally identifiable information. Additionally, for systems administration, 
+				detecting usage patterns and troubleshooting purposes, our web servers automatically log standard access information including browser type, 
+				access times/open mail, URL requested, and referral URL. This information is not shared with third parties and is used only within this Company 
+				on a need-to-know basis. Any individually identifiable information related to this data will never be used in any way different to that stated 
+				above without your explicit permission.   
+				</p>
+				<p>Links to this website</p>
+				<p>
+				You may not create a link to any page of this website without our prior written consent. If you do create a link to a page of this website you 
+				do so at your own risk and the exclusions and limitations set out above will apply to your use of this website by linking to it.  
+				</p>
+				<p>Links from this website</p>
+				<p>
+				We do not monitor or review the content of other party‟s websites which are linked to from this website. Opinions expressed or material appearing 
+				on such websites are not necessarily shared or endorsed by us and should not be regarded as the publisher of such opinions or material. Please be 
+				aware that we are not responsible for the privacy practices, or content, of these sites. We encourage our users to be aware when they leave our 
+				site & to read the privacy statements of these sites. You should evaluate the security and trustworthiness of any other site connected to this site 
+				or accessed through this site yourself, before disclosing any personal information to them. This Team will not accept any responsibility for any 
+				loss or damage in whatever manner, howsoever caused, resulting from your disclosure to third parties of personal information.   
+				</p>
+				<p>Copyright Notice</p>
+				<p> 
+				Copyright and other relevant intellectual property rights exists on all text relating to the Company‟s services and the 
+				full content of this website.   
+				This Company‟s logo is a registered trademark of this Company
+				in the Singapore and other countries. The brand names and specific services of this Company featured on this web site are trade marked.
+				</p>
+				<p>Communication</p>
+				<p>
+				We have several different e-mail addresses for different queries. These, & other contact information, can be found on our 
+				Contact Us.
+				</p>
+				<p>Force Majeure</p>
+				<p>
+				Neither party shall be liable to the other for any failure to perform any obligation under any Agreement which is due to an event beyond the control
+				of such party including but not limited to any Act of God, terrorism, war, Political insurgence, insurrection, riot, civil unrest, act of civil or 
+				military authority, uprising, earthquake, flood or any other natural or man made eventuality outside of our control, which causes the termination of 
+				an agreement or contract entered into, nor which could have been reasonably foreseen. Any Party affected by such event shall forthwith inform the 
+				other Party of the same and shall use all reasonable endeavours to comply with the terms and conditions of any Agreement contained herein.   
+				</p>
+				<p>Waiver</p>
+				<p>
+				Failure of either Party to insist upon strict performance of any provision of this or any Agreement or the failure of either Party to exercise any right
+				or remedy to which it, he or they are entitled hereunder shall not constitute a waiver thereof and shall not cause a diminution of the obligations under
+				this or any Agreement. No waiver of any of the provisions of this or any Agreement shall be effective unless it is expressly stated to be such and signed
+				by both Parties.</p> 
+				<p>Notification of Changes</p>
+				<p>
+				The Team reserves the right to change these conditions from time to time as it sees fit and your continued use of the site will signify your acceptance of
+				any adjustment to these terms. If there are any changes to our privacy policy, we will announce that these changes have been made on our home page and on 
+				other key pages on our site. If there are any changes in how we use our site customers‟ Personally Identifiable Information, notification by e-mail or postal
+				mail will be made to those affected by this change. Any changes to our privacy policy will be posted on our web site 30 days prior to these changes taking place.
+				You are therefore advised to re-read this statement on a regular basis These terms and conditions form part of the Agreement between the Client and ourselves. 
+				Your accessing of this website and/or undertaking of a booking or Agreement indicates your understanding, agreement to and acceptance, of the Disclaimer Notice 
+				and the full Terms and Conditions contained herein. Your statutory Consumer Rights are unaffected.</p>
+					 <p>© Surveyvor 2012 All Rights Reserved</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<!-- Forgot Password modal -->
+		<div class="modal  hide fade"  id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">		
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="forgotPasswordModalLabel">Forgot Password</h3>
+			</div>
+			<div class="modal-body">
+				<p> In order to reset your password please enter your email adress</p>
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<div class="control-group" id="resetEmailGrp">
+							<label class="control-label" for="resetEmailInput">Email Address</label>
+							<div class="controls" >
+								<div class="span6">
+									<input type="text" id="resetEmailInput" maxlength="254" placeholder="Email" class="span12">
+								</div>
+								<div class="span6">
+									<span class="help-inline " id="resetInvalidEmail" style="display: none;">Invalid email</span>
+									<span class="help-inline " id="resetEmailNotFound" style="display: none;">Sorry we haven't found your email in our system</span>
+									<span class="help-inline " id="resetEmailEmptyMsg" style="display: none;"> Enter your email please...</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="alert alert-success " style="display: none;" id="resetPasswordMessage">
+					<h5 class="alert-heading">Information!</h5>
+					A new random password have been send to your email adress.
+				</div>
+				<div class="alert alert-info" id="resetWaitMessage" style="display: none;">
+					<h5 class="alert-heading">Please wait...</h5>
+					Your reset password request is being processed by the system. 
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" id="resetPasswordButton" >Validate</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>			
+			</div>
+		</div>
+
+		<!-- Javascript Includes --> 
+		<script async src="/static/js/Account/login.min.js"></script>
+	</body>
+</html>

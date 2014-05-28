@@ -1,0 +1,61 @@
+
+body {
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+.side-menu {
+	padding: 8px 0; /* padding of 8 pixels on top and bottom */
+}
+
+.form-actions {
+	padding-bottom: 0px;
+}
+
+.form-label {
+	text-align: right;
+}
+
+.force-min-width {
+	min-width: 950px;
+}
+
+.navbar .brand {
+	padding-bottom: 0px; /* for firefox */
+}
+
+.modal {
+	margin-top: -280px;
+	max-height: 80%;
+}
+
+.hasPointer {
+	cursor: pointer;
+}
+
+.modal.large{
+	width: 80%;
+	margin-left: -40%; /* - width/2 */
+}
+
+.modal.large.hasBigBody{
+	max-height: 100%;
+	margin-top: -320px;
+}
+
+.modal.large.hasBigBody .modal-body{
+	max-height: 520px;
+	height: 520px;
+}
+
+.nav-list.fixed {
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+textarea {
+	resize: none;
+}
+
+.tab-content {
+	overflow: visible;
+}

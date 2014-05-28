@@ -1,0 +1,110 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:fillViewport="true" >
+    
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	<TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:text="Add Question"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:ems="10"
+        android:hint="Enter your Question"
+        android:inputType="textMultiLine|textNoSuggestions|textVisiblePassword" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/editText4"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:hint="MinValue"
+        android:inputType="textNoSuggestions|textVisiblePassword" 
+        android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/editText1"
+        android:ems="10"
+        android:hint="MaxValue"
+        android:inputType="textNoSuggestions|textVisiblePassword" 
+        android:visibility="invisible" >
+
+        <requestFocus android:layout_width="wrap_content" />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/editText2"
+        android:ems="10"
+        android:hint="Resolution"
+        android:inputType="textNoSuggestions|textVisiblePassword" 
+        android:visibility="invisible" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
+    <LinearLayout
+        android:id="@+id/answersPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/button2"
+        android:orientation="vertical" 
+        android:visibility="invisible">	
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editText1"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickAddAnswer"
+        android:text="Add Answer"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickSave"
+        android:text="Save" />
+
+</RelativeLayout>
+
+</ScrollView>
